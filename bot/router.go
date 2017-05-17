@@ -27,7 +27,16 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3)
 		response.ReplyMarkup = tgbotapi.NewReplyKeyboard(key)
 	case "help":
-		out = "Questo è quello che puoi chiedermi"
+		out = "Sono un bot testuale, basato sull'"
+		out += "<a href=\"https://it.wikipedia.org/wiki/Elaborazione_del_linguaggio_naturale\">NLP</a>, meglio conosciuta come "
+		out += "elaborazione del linguaggio naturale.\n"
+		out += "Per comunicare con me puoi scrivermi frasi e io "
+		out += "cercherò di risponderti al meglio! 😊\n"
+		out += "Devo ancora imparare tanto, ma per adesso"
+		out += "questo è quello che puoi chiedermi\n"
+		out += "Che cosa è Eta Kappa Nu?\n"
+		out += "Quali sono i prossimi eventi?\n"
+		out += "Avrei una domanda: ....\n"
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
 	case "domanda":
 		text := update.Message.CommandArguments()
@@ -82,6 +91,8 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 		response = tgbotapi.NewMessage(update.Message.Chat.ID,
 			qr.Result.Fulfillment.Speech +
 			"Usa il comando /help per sapere cosa puoi chiedermi")
+	case "input.history":
+		response = tgbotapi.NewMessage(update.Message.Chat.ID, "Storia!")
 	default:
 		response = tgbotapi.NewMessage(update.Message.Chat.ID,
 		qr.Result.Fulfillment.Speech)
@@ -91,7 +102,6 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 		ctx.Bot.Send(response)
 	}
 }
-
 
 func RouteMessages(ctx *BotContext) {
 	for update := range ctx.UpChannel {
@@ -115,7 +125,7 @@ func showEvents(id int64, bot *tgbotapi.BotAPI) {
     if err != nil {
         log.Print(err)
     }
-    events := gjson.GetBytes(buf, "events.#")
+    events := gjson.GetBytes(buf, "events")
     events.ForEach(func(key, value gjson.Result) bool {
         // prepare the messages from json
         out := "<b>"+value.Get("name").String()+"</b>\n"
