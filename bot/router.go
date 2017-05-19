@@ -15,29 +15,9 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 	var out string
 	switch command {
 	case "start":
-		out = "Ciao! Sono HKNBot, il bot dell'Associazione IEEE-Eta Kappa Nu" +
-		" del Politecnico di Torino. Organizziamo Eventi e Gruppi di" +
-		" studio, e tramite me potrai avere tutte le informazioni"+
-		" di cui hai bisogno 👍  Sono un Bot testuale, per cui scrivimi e"+
-		" e cercherò di risponderti!"
-		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
-		button1 := tgbotapi.NewKeyboardButton("Eventi \xF0\x9F\x8E\xAB")
-		button2 := tgbotapi.NewKeyboardButton("Tutoraggi \xE2\x9D\x93")
-		button3 := tgbotapi.NewKeyboardButton("Nascondi")
-		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3)
-		response.ReplyMarkup = tgbotapi.NewReplyKeyboard(key)
+        StartMessage(update, ctx)
 	case "help":
-		out = "Sono un bot testuale, basato sull'"
-		out += "<a href=\"https://it.wikipedia.org/wiki/Elaborazione_del_linguaggio_naturale\">NLP</a>, meglio conosciuta come "
-		out += "elaborazione del linguaggio naturale.\n"
-		out += "Per comunicare con me puoi scrivermi frasi e io "
-		out += "cercherò di risponderti al meglio! 😊\n"
-		out += "Devo ancora imparare tanto, ma per adesso"
-		out += "questo è quello che puoi chiedermi\n"
-		out += "Che cosa è Eta Kappa Nu?\n"
-		out += "Quali sono i prossimi eventi?\n"
-		out += "Avrei una domanda: ....\n"
-		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
+        HelpMessage(update, ctx)
 	case "domanda":
 		text := update.Message.CommandArguments()
 		if text != "" {
@@ -54,8 +34,9 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
 		button1 := tgbotapi.NewKeyboardButton("Eventi \xF0\x9F\x8E\xAB")
 		button2 := tgbotapi.NewKeyboardButton("Tutoraggi \xE2\x9D\x93")
-		button3 := tgbotapi.NewKeyboardButton("Nascondi")
-		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3)
+        button3 := tgbotapi.NewKeyboardButton("Chi siamo?")
+		button4 := tgbotapi.NewKeyboardButton("Nascondi")
+		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3, button4)
 		response.ReplyMarkup = tgbotapi.NewReplyKeyboard(key)
 	default:
 		out = "Scusa, non ho capito! Prova a scrivere il testo senza lo slash"
@@ -92,7 +73,9 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 			qr.Result.Fulfillment.Speech +
 			"Usa il comando /help per sapere cosa puoi chiedermi")
 	case "input.history":
-		response = tgbotapi.NewMessage(update.Message.Chat.ID, "Storia!")
+        HknHistory(update, ctx)
+    case "support.problem":
+        question(update.Message.From.UserName, "bug_reporting: "+qr.Result.Fulfillment.Speech, ctx.Bot)
 	default:
 		response = tgbotapi.NewMessage(update.Message.Chat.ID,
 		qr.Result.Fulfillment.Speech)
@@ -103,6 +86,11 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 	}
 }
 
+func routeInvalid(update tgbotapi.Update, ctx *BotContext) {
+    response := tgbotapi.NewMessage(update.Message.Chat.ID, "Scusa ma io capisco solo il testo!")
+    ctx.Bot.Send(response)
+}
+
 func RouteMessages(ctx *BotContext) {
 	for update := range ctx.UpChannel {
 		if update.Message == nil {
@@ -110,6 +98,8 @@ func RouteMessages(ctx *BotContext) {
 		}
 		if update.Message.IsCommand() {
 			routeCommand(update, ctx)
+        } else if update.Message.Text == "" {
+            routeInvalid(update, ctx)
         } else {
 			routeText(update, ctx)
 		}

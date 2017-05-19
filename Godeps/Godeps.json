@@ -1,0 +1,30 @@
+{
+	"ImportPath": "github.com/AntonioLangiu/hknbot",
+	"GoVersion": "go1.8",
+	"GodepVersion": "v79",
+	"Deps": [
+		{
+			"ImportPath": "github.com/marcossegovia/apiai-go",
+			"Comment": "v0.2.3-beta",
+			"Rev": "0e37fb047dc815b24e4255d145a79b46f77bf847"
+		},
+		{
+			"ImportPath": "github.com/technoweenie/multipartstreamer",
+			"Comment": "v1.0.1",
+			"Rev": "a90a01d73ae432e2611d178c18367fbaa13e0154"
+		},
+		{
+			"ImportPath": "github.com/tidwall/gjson",
+			"Rev": "e30a9c1037e0f9fbde93a6a9848a2dd5c59d3b91"
+		},
+		{
+			"ImportPath": "github.com/tidwall/match",
+			"Rev": "173748da739a410c5b0b813b956f89ff94730b4c"
+		},
+		{
+			"ImportPath": "gopkg.in/telegram-bot-api.v4",
+			"Comment": "v4.6",
+			"Rev": "0a57807db79efce7f6719fbb2c0e0f83fda79aec"
+		}
+	]
+}

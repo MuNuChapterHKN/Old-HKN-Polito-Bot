@@ -29,3 +29,5 @@ config/config.json
 data.db
 vendor/*/
 files/
+
+.DS_Store
