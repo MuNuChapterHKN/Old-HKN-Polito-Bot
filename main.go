@@ -7,6 +7,6 @@ import (
 
 func main() {
     configuration := common.LoadConfiguration()
+    go common.WebServer()
     bot.LoadBot(configuration)
-    common.WebServer()
 }

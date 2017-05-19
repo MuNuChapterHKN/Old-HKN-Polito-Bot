@@ -11,7 +11,7 @@ import (
 func WebServer(){
     http.HandleFunc("/", hello)
     fmt.Println("listening...")
-    err := http.ListenAndServe(":"+os.Getenv("PORT"), nil)
+    err := http.ListenAndServe(":"+os.Getenv("80"), nil)
     if err != nil{
         panic(err)
     }
