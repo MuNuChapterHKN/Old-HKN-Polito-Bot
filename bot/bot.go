@@ -48,7 +48,6 @@ func configApiAi(ctx *BotContext) {
     client, err := apiai.NewClient(
 		&apiai.ClientConfig{
 			Token:      ctx.Config.ApiAiToken,
-			SessionId:  ctx.Config.ApiAiSessionId,
             QueryLang:  ctx.Config.ApiAiQueryLang,
 		},
 	)
