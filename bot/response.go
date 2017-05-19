@@ -52,8 +52,6 @@ func sendCommands(update tgbotapi.Update, ctx *BotContext) {
 	SendText(update, ctx, out)
 }
 
-func
-
 func HknHistory(update tgbotapi.Update, ctx *BotContext) {
     out := "IEEE-Eta Kappa Nu è una honor society "
     out += "fondata in Ottobre 1904 da Maurice L.Carr nell'università dell Illinois.\n "
