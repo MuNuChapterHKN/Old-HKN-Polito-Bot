@@ -28,7 +28,7 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 			out = "Per fare una domanda aggiungi il testo della domanda dopo il comando!"
 		}
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
-		case "keyboard": fallthrough
+    case "keyboard": fallthrough
 	case "tastiera":
 		out = "Ai tuoi ordini!"
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
