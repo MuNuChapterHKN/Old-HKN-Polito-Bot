@@ -38,17 +38,17 @@ func HelpMessage(update tgbotapi.Update, ctx *BotContext) {
 }
 
 func sendCommands(update tgbotapi.Update, ctx *BotContext) {
-	out := "Queste sono alcune delle cose che puoi chiedermi"
-	out += "Che cosa è Eta Kappa Nu?\n"
-	out += "Quali sono i prossimi eventi?\n"
-	out += "Qual'è la storia di Eta Kappa Nu?\n\n"
+    out := "Queste sono <b>alcune delle cose che puoi chiedermi:</b>\n"
+	out += "  Che cosa è Eta Kappa Nu?\n"
+	out += "  Quali sono i prossimi eventi?\n"
+	out += "  Qual'è la storia di Eta Kappa Nu?\n\n"
 	out += "Sono inoltre capace di ripondere ad altre domande, "
-	out += "prova a scoprire quali\n\n"
+	out += "prova a scoprire quali! 😀\n\n"
 
-	out += "Sono inoltre capace di inoltrare delle domande, "
+	out += "Sono inoltre capace di inoltrare delle domande al team di Eta Kappa Nu, "
 	out += "per fare questo puoi usare il comando /domanda "
 	out += "e aggiungere il testo dopo, o scrivere \n"
-	out += "\"Avrei una domanda:\" seguito dal testo"
+	out += "\"Avrei una domanda:\" seguito dal testo della domanda stessa"
 	SendText(update, ctx, out)
 }
 
