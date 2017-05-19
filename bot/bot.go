@@ -14,8 +14,6 @@ type BotContext struct {
     ApiAi *apiai.ApiClient
 }
 
-
-
 func LoadBot(configuration *common.Configuration) {
     ctx := InitBot(configuration)
 	configApiAi(ctx)

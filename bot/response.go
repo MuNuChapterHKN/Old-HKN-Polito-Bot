@@ -41,10 +41,18 @@ func sendCommands(update tgbotapi.Update, ctx *BotContext) {
 	out := "Queste sono alcune delle cose che puoi chiedermi"
 	out += "Che cosa è Eta Kappa Nu?\n"
 	out += "Quali sono i prossimi eventi?\n"
-	out += "Qual'è la storia di Eta Kappa Nu?\n"
-	out += "Avrei una domanda: ....\n"
+	out += "Qual'è la storia di Eta Kappa Nu?\n\n"
+    out += "Sono inoltre capace di ripondere ad altre domande, "
+    out += "prova a scoprire quali\n\n"
+
+    out += "Sono inoltre capace di inoltrare delle domande, "
+    out += "per fare questo puoi usare il comando /domanda "
+    out += "e aggiungere il testo dopo, o scrivere \n"
+    out += "\"Avrei una domanda:\" seguito dal testo"
 	SendText(update, ctx, out)
 }
+
+func
 
 func HknHistory(update tgbotapi.Update, ctx *BotContext) {
     out := "IEEE-Eta Kappa Nu è una honor society "
