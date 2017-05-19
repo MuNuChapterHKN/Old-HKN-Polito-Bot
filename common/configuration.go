@@ -4,7 +4,6 @@ import (
     "encoding/json"
     "os"
     "log"
-    "reflect"
 )
 
 type Configuration struct {
@@ -26,19 +25,21 @@ func LoadConfiguration() *Configuration {
         log.Printf("error:", err)
     }
     // Get the variables also from the environment
-    params := []string{
-        "TelegramAPI",
-        "ApiAiToken",
-        "ApiAiSessionId",
-        "ApiAiQueryLang",
+    token := os.Getenv("TelegramAPI")
+    if token != "" {
+        configuration.TelegramAPI = token
     }
-    r := reflect.ValueOf(configuration)
-    for _, p := range params {
-        token := os.Getenv(p)
-        v := reflect.Indirect(r).FieldByName(p)
-        if v.CanSet() == true {
-            v.SetString(token)
-        }
+    token = os.Getenv("ApiAiToken")
+    if token != "" {
+        configuration.ApiAiToken = token
+    }
+    token = os.Getenv("ApiAiSessionId")
+    if token != "" {
+        configuration.ApiAiSessionId = token
+    }
+    token = os.Getenv("ApiAiQueryLang")
+    if token != "" {
+        configuration.ApiAiQueryLang = token
     }
     return &configuration
 }

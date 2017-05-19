@@ -49,10 +49,11 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 }
 
 func routeText(update tgbotapi.Update, ctx *BotContext) {
-	qr, err := ctx.ApiAi.Query(apiai.Query{Query: []string{update.Message.Text}})
+    qr, err := ctx.ApiAi.Query(apiai.Query{Query: []string{update.Message.Text}, SessionId:ctx.Config.ApiAiSessionId})
 	var response tgbotapi.MessageConfig
 	if err != nil {
 		log.Print(err)
+        return
 	}
 	if qr.Status.Code != 200 {
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, "In questo momento"+
