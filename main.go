@@ -8,4 +8,5 @@ import (
 func main() {
     configuration := common.LoadConfiguration()
     bot.LoadBot(configuration)
+    common.WebServer()
 }
