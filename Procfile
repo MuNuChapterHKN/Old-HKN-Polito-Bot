@@ -1,1 +1,1 @@
-web: odgbot
+web: hknbot
