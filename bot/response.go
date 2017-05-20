@@ -11,7 +11,7 @@ func SendText(update tgbotapi.Update, ctx *BotContext, text string) {
 }
 
 func StartMessage(update tgbotapi.Update, ctx *BotContext) {
-	out := "Ciao! Sono HKNBot, il bot dell'Associazione IEEE-Eta Kappa Nu" +
+	out := "Ciao! Sono HKNBot, il 🤖  dell'Associazione IEEE-Eta Kappa Nu" +
 		" del Politecnico di Torino. Organizziamo Eventi e Gruppi di" +
 		" studio, e tramite me potrai avere tutte le informazioni" +
 		" di cui hai bisogno 👍  Sono un Bot testuale, per cui scrivimi e" +
@@ -54,9 +54,12 @@ func sendCommands(update tgbotapi.Update, ctx *BotContext) {
 
 func HknHistory(update tgbotapi.Update, ctx *BotContext) {
 	out := "IEEE-Eta Kappa Nu è una honor society "
-	out += "fondata in Ottobre 1904 da Maurice L.Carr nell'università dell Illinois.\n "
-	out += "Il suo scopo è riunire i migliori studenti delle facoltà di Ingegneria Informatica "
-	out += "ed elettronica e conta oggi più di 200,000 membri in tutto il mondo!\n"
+	out += "fondata in Ottobre 1904 da <b>Maurice L.Carr</b> nell'università dell Illinois.\n"
+    out += "L'unione con IEEE è stata formalizzata il <b>1º settembre 2010</b>, data che sancisce "
+    out += "l'ingresso di Eta Kappa Nu tra le unità organizzative dell'IEEE.\n"
+    out += "Le lettere greche <b>H K</b> e <b>N</b> che compongono il nome dell'"
+    out += "Associazione sono la prima, la quarta e l'ultima lettera della parola <b>ΗΛΕΚΤΡΟΝ</b>, "
+    out += "da cui nasce poi il termine \"elettrone\".💡"
 	SendText(update, ctx, out)
 
 	// This one should be done with an uploader that stores the file id in structure, without the need to hardcode it

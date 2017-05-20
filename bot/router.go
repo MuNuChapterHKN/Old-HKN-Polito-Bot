@@ -1,13 +1,58 @@
 package bot
 
 import (
+    "fmt"
 	"github.com/marcossegovia/apiai-go"
 	"github.com/tidwall/gjson"
 	"gopkg.in/telegram-bot-api.v4"
 	"io/ioutil"
 	"log"
 	"strings"
+    "strconv"
 )
+
+func RouteMessages(ctx *BotContext) {
+	for update := range ctx.UpChannel {
+        if update.ChannelPost != nil {
+            routeChannel(update, ctx)
+            continue
+        }
+        if update.Message == nil {
+			continue
+		}
+        if update.Message.IsCommand() {
+			routeCommand(update, ctx)
+		} else if update.Message.Text == "" {
+			routeInvalid(update, ctx)
+		} else {
+			routeText(update, ctx)
+		}
+	}
+}
+
+func routeChannel(update tgbotapi.Update, ctx *BotContext) {
+    if update.ChannelPost.Chat.ID == -1001111552162 {
+        if update.ChannelPost.ReplyToMessage != nil {
+            if update.ChannelPost.Text == "" {
+                return
+            }
+            text := update.ChannelPost.ReplyToMessage.Text
+            split := strings.Split(text, "@")
+            if len(split) > 0 {
+                id, err := strconv.ParseInt(split[0], 10, 64)
+                if err != nil {
+                    log.Print(err)
+                    return
+                }
+                out := "<b>Ecco la risposta che ho ricevuto dai miei capi:</b> "
+                out += update.ChannelPost.Text
+                response := tgbotapi.NewMessage(id, out)
+                response.ParseMode = "HTML"
+                ctx.Bot.Send(response)
+            }
+        }
+    }
+}
 
 func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 	command := strings.ToLower(update.Message.Command())
@@ -21,7 +66,7 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 	case "domanda":
 		text := update.Message.CommandArguments()
 		if text != "" {
-			question(update.Message.From.UserName, text, ctx.Bot)
+			question(update.Message.From.ID, update.Message.From.UserName, text, ctx.Bot)
 			out = "Grazie della domanda, chiederò ai miei superiori" +
 				" e ti risponderò il prima possibile! 😃"
 		} else {
@@ -35,9 +80,8 @@ func routeCommand(update tgbotapi.Update, ctx *BotContext) {
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, out)
 		button1 := tgbotapi.NewKeyboardButton("Eventi \xF0\x9F\x8E\xAB")
 		button2 := tgbotapi.NewKeyboardButton("Tutoraggi \xE2\x9D\x93")
-		button3 := tgbotapi.NewKeyboardButton("Chi siamo?")
-		button4 := tgbotapi.NewKeyboardButton("Nascondi")
-		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3, button4)
+		button3 := tgbotapi.NewKeyboardButton("Nascondi")
+		key := tgbotapi.NewKeyboardButtonRow(button1, button2, button3)
 		response.ReplyMarkup = tgbotapi.NewReplyKeyboard(key)
 	default:
 		out = "Scusa, non ho capito! Prova a scrivere il testo senza lo slash"
@@ -62,7 +106,7 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 	}
 	switch qr.Result.Action {
 	case "input.question":
-		question(update.Message.From.UserName, qr.Result.Params["any"], ctx.Bot)
+		question(update.Message.From.ID, update.Message.From.UserName, qr.Result.Params["any"], ctx.Bot)
 		response = tgbotapi.NewMessage(update.Message.Chat.ID,
 			qr.Result.Fulfillment.Speech)
 	case "information.events":
@@ -77,10 +121,19 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 	case "input.history":
 		HknHistory(update, ctx)
 	case "support.problem":
-		question(update.Message.From.UserName, "bug_reporting: "+qr.Result.Fulfillment.Speech, ctx.Bot)
+		question(update.Message.From.ID, update.Message.From.UserName, "bug_reporting: "+update.Message.Text, ctx.Bot)
 	default:
-		response = tgbotapi.NewMessage(update.Message.Chat.ID,
-			qr.Result.Fulfillment.Speech)
+        if qr.Result.Fulfillment.Messages != nil {
+            for _,elem := range qr.Result.Fulfillment.Messages {
+                if elem.Type == 0 {
+                    response = tgbotapi.NewMessage(update.Message.Chat.ID,
+                    elem.Speech)
+                }
+            }
+        } else {
+            response = tgbotapi.NewMessage(update.Message.Chat.ID,
+            qr.Result.Fulfillment.Speech)
+        }
 	}
 	if response.Text != "" {
 		response.ParseMode = "HTML"
@@ -91,21 +144,6 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 func routeInvalid(update tgbotapi.Update, ctx *BotContext) {
 	response := tgbotapi.NewMessage(update.Message.Chat.ID, "Scusa ma io capisco solo il testo!")
 	ctx.Bot.Send(response)
-}
-
-func RouteMessages(ctx *BotContext) {
-	for update := range ctx.UpChannel {
-		if update.Message == nil {
-			continue
-		}
-		if update.Message.IsCommand() {
-			routeCommand(update, ctx)
-		} else if update.Message.Text == "" {
-			routeInvalid(update, ctx)
-		} else {
-			routeText(update, ctx)
-		}
-	}
 }
 
 func showEvents(id int64, bot *tgbotapi.BotAPI) {
@@ -133,8 +171,9 @@ func showEvents(id int64, bot *tgbotapi.BotAPI) {
 	})
 }
 
-func question(user string, text string, bot *tgbotapi.BotAPI) {
-	var out string = "<b>@" + user + ":</b> " + text
+func question(id int, user string, text string, bot *tgbotapi.BotAPI) {
+    out := fmt.Sprintf("%v", id)
+    out += "<b>@" + user + ":</b> " + text
 	msg := tgbotapi.NewMessageToChannel("-1001111552162", out)
 	msg.ParseMode = "HTML"
 	bot.Send(msg)
