@@ -3,9 +3,7 @@ package bot
 import (
     "fmt"
 	"github.com/marcossegovia/apiai-go"
-	"github.com/tidwall/gjson"
 	"gopkg.in/telegram-bot-api.v4"
-	"io/ioutil"
 	"log"
 	"strings"
     "strconv"
@@ -13,10 +11,16 @@ import (
 
 func RouteMessages(ctx *BotContext) {
 	for update := range ctx.UpChannel {
+        // Message to channel
         if update.ChannelPost != nil {
             routeChannel(update, ctx)
             continue
         }
+        // Callback query
+        if update.CallbackQuery != nil {
+            routeCallbackQuery(update, ctx)
+        }
+        // Message from Chat
         if update.Message == nil {
 			continue
 		}
@@ -28,6 +32,17 @@ func RouteMessages(ctx *BotContext) {
 			routeText(update, ctx)
 		}
 	}
+}
+
+func routeCallbackQuery(update tgbotapi.Update, ctx *BotContext) {
+    data := update.CallbackQuery.Data
+    split := strings.Split(data, ":")
+    switch split[0] {
+    case "event":
+        RouteEventQuery(split, update, ctx)
+    default:
+        log.Print("error, I received a callback query I'm not ready to handle")
+    }
 }
 
 func routeChannel(update tgbotapi.Update, ctx *BotContext) {
@@ -110,7 +125,7 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 		response = tgbotapi.NewMessage(update.Message.Chat.ID,
 			qr.Result.Fulfillment.Speech)
 	case "information.events":
-		showEvents(update.Message.Chat.ID, ctx.Bot)
+		ShowEvents(update, ctx)
 	case "buttons.hide":
 		response = tgbotapi.NewMessage(update.Message.Chat.ID, "Okay!")
 		response.ReplyMarkup = tgbotapi.NewRemoveKeyboard(true)
@@ -144,31 +159,6 @@ func routeText(update tgbotapi.Update, ctx *BotContext) {
 func routeInvalid(update tgbotapi.Update, ctx *BotContext) {
 	response := tgbotapi.NewMessage(update.Message.Chat.ID, "Scusa ma io capisco solo il testo!")
 	ctx.Bot.Send(response)
-}
-
-func showEvents(id int64, bot *tgbotapi.BotAPI) {
-	msg := tgbotapi.NewMessage(id, "I prossimi eventi sono:")
-	bot.Send(msg)
-	// open the events file
-	buf, err := ioutil.ReadFile("events.json")
-	if err != nil {
-		log.Print(err)
-	}
-	events := gjson.GetBytes(buf, "events")
-	events.ForEach(func(key, value gjson.Result) bool {
-		// prepare the messages from json
-		out := "<b>" + value.Get("name").String() + "</b>\n"
-		out += value.Get("description").String()
-		msg = tgbotapi.NewMessage(id, out)
-		msg.ParseMode = "HTML"
-		button1 := tgbotapi.NewInlineKeyboardButtonData("Descrizione \xF0\x9F\x8E\xAB", "qu    estion")
-		button2 := tgbotapi.NewInlineKeyboardButtonData("Registrati \xE2\x9D\x93", "registr    ati")
-		row := tgbotapi.NewInlineKeyboardRow(button1, button2)
-		keyboard := tgbotapi.NewInlineKeyboardMarkup(row)
-		msg.ReplyMarkup = keyboard
-		bot.Send(msg)
-		return true // keep iterating
-	})
 }
 
 func question(id int, user string, text string, bot *tgbotapi.BotAPI) {

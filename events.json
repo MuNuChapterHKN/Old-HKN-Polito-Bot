@@ -1,9 +1,11 @@
 {
     "events": [
         {
+            "uid": "ak565dk",
             "name": "Hello Bot!",
             "date": "20 Maggio 2017",
             "description": "Hello Bot! è un evento organizzato da Eta Kappa Nu Polito volto ad insegnare ai partecipanti cosa sono, a cosa servono e come possono essere realizzati i chatbot. Pronto a metterti in gioco?",
+            "eventbrite": "https://www.eventbrite.it/e/biglietti-hello-bot-34285403565",
             "structure": [
                 {
                     "start":"9:30",
