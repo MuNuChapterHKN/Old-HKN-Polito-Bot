@@ -35,7 +35,9 @@ func RouteEventQuery(data []string, update tgbotapi.Update, ctx *BotContext) {
        }
        if data[2] == "structure" {
            var out string
-	   speaker := (talk.Speaker == "")? "": "<b>["+talk.Speaker+"]</b>\n"
+           speaker := ""
+	   if talk.Speaker != ""
+		speaker = "<b>["+talk.Speaker+"]</b>\n"
            for _, talk := range event.Structure {
                 out += "<b>"+talk.Start+"-"
                 out += talk.End+"</b>\t\t"
