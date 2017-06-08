@@ -1,47 +1,35 @@
 {
     "events": [
         {
-            "uid": "ak565dk",
-            "name": "Hello Bot!",
-            "date": "20 Maggio 2017",
-            "description": "Hello Bot! è un evento organizzato da Eta Kappa Nu Polito volto ad insegnare ai partecipanti cosa sono, a cosa servono e come possono essere realizzati i chatbot. Pronto a metterti in gioco?",
-            "eventbrite": "https://www.eventbrite.it/e/biglietti-hello-bot-34285403565",
+            "uid": "aksdfas",
+            "name": "Hello Bot! 2",
+            "date": "8 Giugno 2017",
+            "description": "Hello Bot! 2 è il secondo evento del percorso Hello Bot. Attraverso gli interventi di linguisti computazionali e aziende esperte del settore, potrete capire come l’intelligenza artificiale elabora il linguaggio naturale e, quindi, come fa un chatbot a capire e rispondere in modo opportuno.",
+	    "eventbrite": "https://www.eventbrite.it/e/biglietti-hello-bot-2-34957154791",
             "structure": [
                 {
-                    "start":"9:30",
-                    "end":"10:00",
-                    "description": "Chatbot 101",
-                    "speaker": "Mattia Della Libera"
+                    "start":"16:30",
+                    "end":"17:00",
+                    "description": "Accettazione",
+                    "speaker": ""
                 },
                 {
-                    "start":"10:10",
-                    "end":"10:40",
-                    "description": "Bot Design... tutto il resto è magia",
-                    "speaker": "Marzia La Ganga"
+                    "start":"17:00",
+                    "end":"17:30",
+                    "description": "Sintesi Vocale",
+                    "speaker": "Paolo Mairano"
                 },
                 {
-                    "start":"10:50",
-                    "end":"11:20",
-                    "description": "Chatbot e blockchain possono parlare?",
-                    "speaker": "Andrea Francesco Speziale"
+                    "start":"17:30",
+                    "end":"18:00",
+                    "description": "Dalla linguistica al machine learning",
+                    "speaker": "CELI Talk"
                 },
                 {
-                    "start":"11:30",
-                    "end":"12:00",
-                    "description": "Sviluppo di un bot con IBM Bluemix",
-                    "speaker": "Blue Reply: Oscar Pistamiglio, Stefano Zuccato"
-                },
-                {
-                    "start":"12:00",
-                    "end":"13:00",
-                    "description": "Sviluppo di un assistente virtuale vocale per la vendita (Parte 1)",
-                    "speaker": "Blue Reply: Oscar Pistamiglio, Stefano Zuccato"
-                },
-                {
-                    "start":"14:00",
-                    "end":"15:30",
-                    "description": "Sviluppo di un assistente virtuale vocale per la vendita (Parte 2)",
-                    "speaker": "Blue Reply: Oscar Pistamiglio, Stefano Zuccato"
+                    "start":"18:00",
+                    "end":"19:30",
+                    "description": "Come si costruiscono le interfacce conversazionali?",
+                    "speaker": "CELI Workshop"
                 }
             ]
         }
