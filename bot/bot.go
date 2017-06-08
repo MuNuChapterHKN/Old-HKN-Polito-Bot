@@ -1,7 +1,7 @@
 package bot
 
 import (
-	"github.com/AntonioLangiu/hknbot/common"
+	"github.com/hkn-polito/hknbot/common"
 	"github.com/marcossegovia/apiai-go"
 	"gopkg.in/telegram-bot-api.v4"
 	"log"

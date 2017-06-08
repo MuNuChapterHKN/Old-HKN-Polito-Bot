@@ -1,8 +1,8 @@
 package main
 
 import (
-	"github.com/AntonioLangiu/hknbot/bot"
-	"github.com/AntonioLangiu/hknbot/common"
+	"github.com/hkn-polito/hknbot/bot"
+	"github.com/hkn-polito/hknbot/common"
 )
 
 func main() {
