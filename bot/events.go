@@ -35,15 +35,13 @@ func RouteEventQuery(data []string, update tgbotapi.Update, ctx *BotContext) {
        }
        if data[2] == "structure" {
            var out string
-           speaker := ""
-	   if talk.Speaker != "" {
-		speaker = "<b>["+talk.Speaker+"]</b>\n"
-	   }
            for _, talk := range event.Structure {
                 out += "<b>"+talk.Start+"-"
                 out += talk.End+"</b>\t\t"
-                out += speaker
-                out += "\t\t"+talk.Description+"\n\n"
+		if talk.Speaker != "" {
+			out += "<b>["+talk.Speaker+"]</b>\n"
+		}
+		out += "\t\t"+talk.Description+"\n\n"
            }
            msg := tgbotapi.NewMessage(update.CallbackQuery.Message.Chat.ID, out)
            msg.ParseMode = "HTML"
